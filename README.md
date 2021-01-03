@@ -1,1 +1,1 @@
-# mobile app using React Native and graphQL
+# Mobile app using graphQL
