@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, ScrollView, FlatList } from 'react-native';
 
 export default function App() {
 
@@ -15,14 +15,14 @@ export default function App() {
     console.log(enteredGoal)
     // courseGoals doesn't always garantee
     //setCourseGoal([...courseGoals, enteredGoal])
-    setCourseGoals(currentGoals => [...courseGoals, enteredGoal]);
+    setCourseGoals(currentGoals => [...courseGoals, { key: Math.random().toString(), value: enteredGoal }]);
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         <TextInput
-          placeholder="Course Goal"
+          placeholder="Write a goal"
           style={styles.textInput}
           onChangeText={goalInputHandler}
           value={enteredGoal}
@@ -30,10 +30,19 @@ export default function App() {
         <Button title="ADD" onPress={addGoalHandler}/>
         <Text></Text>
       </View>
-      <View>
-        {/* list of goals */}
-        {courseGoals.map(goal => <View style={styles.listItem}><Text key={goal}>{goal}</Text></View>)}
-      </View>
+
+      {/* ScrollView : limited items */}
+      {/* list of goals */}
+      <FlatList
+        keyExtractor={(item, index) => item.id}
+        data={courseGoals}
+        renderItem={itemData => (
+          <View style={styles.listItem}>
+            <Text>{itemData.item.value}</Text>
+          </View>
+      )}
+    />
+       {/* {courseGoals.map(goal => <View style={styles.listItem} key={goal}><Text>{goal}</Text></View>)} */}
     </View>
   );
 }
